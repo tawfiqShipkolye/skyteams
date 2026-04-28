@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Drafts</h3>
+    <a href="{% url 'compose' %}" class="btn btn-primary">+ New Message</a>
+</div>
+<div class="card shadow">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>To</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for msg in messages_list %}
+                <tr class="message-row">
+                    <td>{% for r in msg.recipients.all %}{{ r.username }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                    <td>{{ msg.subject }}</td>
+                    <td>{{ msg.created_at|date:"d M Y H:i" }}</td>
+                    <td>
+                        <a href="{% url 'delete_message' msg.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">No drafts saved.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

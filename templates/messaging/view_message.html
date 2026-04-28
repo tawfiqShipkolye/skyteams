@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="card-title mb-0">{{ message.subject }}</h3>
+                    <a href="{% url 'inbox' %}" class="btn btn-outline-secondary btn-sm">Back to Inbox</a>
+                </div>
+                <table class="table table-borderless">
+                    <tr>
+                        <th width="80">From</th>
+                        <td>{{ message.sender.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>To</th>
+                        <td>{% for r in message.recipients.all %}{{ r.username }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td>{{ message.created_at|date:"d M Y H:i" }}</td>
+                    </tr>
+                </table>
+                <hr>
+                <div class="mt-3 p-3 bg-light rounded">
+                    {{ message.body|linebreaks }}
+                </div>
+                <div class="mt-4 d-flex gap-2">
+                    <a href="{% url 'compose' %}" class="btn btn-primary">Reply</a>
+                    {% if message.sender == request.user %}
+                    <a href="{% url 'delete_message' message.pk %}" class="btn btn-outline-danger">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
