@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+# Author: Student 3 - Tawfiq
+
 urlpatterns = [
     path('', views.inbox, name='inbox'),
     path('sent/', views.sent, name='sent'),
